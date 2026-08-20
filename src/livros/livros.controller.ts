@@ -2,7 +2,9 @@ import { Controller, Body, Post, Get, Param, ParseIntPipe, Put, Delete } from '@
 import { CreateLivroDto } from './dto/create-livro.dto';
 import { LivrosService } from './livros.service';
 import { updateLivroDto } from './dto/update-livro.dto';
-import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Livros') // Coloca uma Tag chamada "Livros"
 @Controller('livros')
@@ -24,6 +26,8 @@ export class LivrosController {
         status: 404,
         description: 'Não foi possível cadastrar o livro'
     })
+    @UseGuards(AuthGuard)
+    @ApiBearerAuth()
     criar(@Body() createLivroDto : CreateLivroDto){
         // O @Body captura od dados enviados no corpo da requisição
         // O DTO define como esses dados deverão ser validados.
